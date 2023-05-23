@@ -1,7 +1,7 @@
 //@ts-ignore
 import axios from "axios";
 const API = axios.create({
-  baseURL: "https://2c56-2a02-14f-173-18b5-7c14-aac0-8485-4609.ngrok-free.app/",
+  baseURL: "https://nails-project.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },

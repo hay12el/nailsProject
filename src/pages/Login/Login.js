@@ -1,10 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import API from "../../api/api";
-import React from "react";
-import { ScrollView, Animated, ImageBackground, Text } from "react-native";
+import React, {useRef, useEffect} from "react";
+import { Animated, ImageBackground } from "react-native";
 import image from "../../../assets/kkaa.png";
 import { Formik } from "formik";
-import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header";
 import {
@@ -22,7 +21,7 @@ import {
   TextLink,
   TextLinkContent,
 } from "../../styles/styles";
-import { View, Image, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { brand, derLight } = Colors;
 import * as Device from 'expo-device';
@@ -70,7 +69,7 @@ const Login = ({ navigation }) => {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        // console.log(response);
       });
 
     return () => {
@@ -254,7 +253,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    // console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
