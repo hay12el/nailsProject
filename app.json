@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "nailsApp",
+    "slug": "nailsApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/3.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/3.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hay12el.nailsApp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.hay12el.nailsApp",
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ebe9f58a-f010-4280-9a81-bd209a54a597"
+      }
+    },
+    "plugins": [
+      "expo-build-properties"
+    ]
+  }
+}
