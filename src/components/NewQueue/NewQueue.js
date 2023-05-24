@@ -563,7 +563,7 @@ const NewQueue = (props) => {
                 <FontAwesome
                   name="arrow-down"
                   size={30}
-                  color={colors.second}
+                  color={colors.first}
                 />
               </LinearGradient>
             </TouchableOpacity>

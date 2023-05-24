@@ -83,7 +83,8 @@ const Login = ({ navigation }) => {
   const LOgin = async (values, formikActions) => {
     dispatch(SETLOADING({ loading: true }));
     const cleanEmail = values.email.trim().toLowerCase();
-    const cleanData = { email: cleanEmail, password: values.password };
+
+    const cleanData = { email: cleanEmail, password: values.password};
     API.post("/user/login", { ...cleanData })
       .then(async (response) => {
         const newUser = response.data.user;
