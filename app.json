@@ -11,19 +11,19 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hay12el.nailsApp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/3.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.hay12el.nailsApp",
+      "permissions": ["NOTIFICATIONS"],
+      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -34,8 +34,6 @@
         "projectId": "ebe9f58a-f010-4280-9a81-bd209a54a597"
       }
     },
-    "plugins": [
-      "expo-build-properties"
-    ]
+    "plugins": ["expo-build-properties", "@react-native-firebase/app"]
   }
 }
