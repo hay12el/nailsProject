@@ -104,14 +104,17 @@ const Login = ({ navigation }) => {
           newUser.isAdmin == true ? "1" : "0"
         );
         await AsyncStorage.setItem("myAdmin", newUser.myAdmin);
+        
+      }).then(async ()=> {
+        let token = await AsyncStorage.getItem("token");
         await API.post('/Notification/updateToken', {
-          token: response.data.token,
+          token: token,
           notifiToken: expoPushToken
         })
       })
       .catch((err) => {
         dispatch(SETLOADING({ loading: false }));
-        console.log(err);
+        console.log(err.message);
       });
   };
 

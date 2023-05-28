@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "737642201203-cf5crj5ko0o53q5dbv9goid0h3tf4b2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hay12el.nailsApp",
+            "certificate_hash": "010dc0feb7836815c9f5816a61b47a1decf30ce9"
+          }
+        },
+        {
           "client_id": "737642201203-pkk2us3cl9bfuqlact7emn7k7lfpm4qo.apps.googleusercontent.com",
           "client_type": 3
         }

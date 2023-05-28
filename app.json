@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "nailsApp",
+    "name": "Shira Nails",
     "slug": "nailsApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/3.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/3.png",
+      "image": "./assets/kkaa.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

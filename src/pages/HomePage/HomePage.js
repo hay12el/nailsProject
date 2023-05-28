@@ -1,8 +1,4 @@
-import {
-  View,
-  Animated,
-  ImageBackground,
-} from "react-native";
+import { View, Animated, ImageBackground } from "react-native";
 import React, { useRef, useState, useEffect } from "react";
 import { styles } from "../HomePage/SHomePage";
 import { StatusBar } from "expo-status-bar";
@@ -35,12 +31,6 @@ const HomePage = () => {
         ></ImageBackground>
 
         <Animated.ScrollView
-          // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollA } } }],
-            { useNativeDriver: true }
-          )}
-          scrollEventThrottle={16}
           style={{ width: "100%" }}
         >
           <View

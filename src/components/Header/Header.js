@@ -46,11 +46,7 @@ const Header = () => {
             </Text>
           </Pressable>
         )}
-        <Text style={styles.txt}>NA'AMA NAILS</Text>
-        {/* <Image
-            source={require("../../../assets/11.png")}
-            style={{ height: 180, width: 180 }}
-          ></Image> */}
+        <Text style={styles.txt}>SHIRA NAILS</Text>
       </LinearGradient>
     </Animated.View>
   );

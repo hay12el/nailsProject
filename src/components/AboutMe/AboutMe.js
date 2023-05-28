@@ -1,18 +1,14 @@
 import { View, Text, Pressable, Image, Animated } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./SAboutMe";
-import Title from "../Title/Title";
 import { useDispatch, useSelector } from "react-redux";
-import LittleTitle from "../LittleTitle/LittleTitle";
 import { SETOPEN } from "../../redux/Properties";
-import texts from "../../utils/texts";
 import colors from "../../styles/colors";
-import { LinearGradient } from "expo-linear-gradient";
 
 const AboutMe = ({ open }) => {
   const [about, setAbout] = useState(false);
   const user = useSelector((state) => state.user);
-  const text = useSelector((state) => state.properties.aboutMe);
+  const text = useSelector((state) => state.properties?.aboutMe);
   const [firstRender, setFirstRender] = useState(0);
   const dispatch = useDispatch();
   const fadeAnim = new Animated.Value(1);
