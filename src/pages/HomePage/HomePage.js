@@ -3,7 +3,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { styles } from "../HomePage/SHomePage";
 import { StatusBar } from "expo-status-bar";
 import { useSelector } from "react-redux";
-import messaging from "@react-native-firebase/messaging";
 // Components
 import Links from "../../components/Links/Links";
 import WorkScroll from "../../components/WorkScroll/WorkScroll";
@@ -18,39 +17,6 @@ const HomePage = () => {
   const user = useSelector((state) => state.user);
   const scrollA = useRef(new Animated.Value(0)).current;
   const rreload = false;
-
-  useEffect(() => {
-    pushNotification();
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
-    });
-
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      console.log("Message handled in the background!", remoteMessage);
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        if (remoteMessage) {
-          console.log(
-            "Notification caused app to open from quit state:",
-            remoteMessage.notification
-          );
-          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-        }
-        setLoading(false);
-      });
-
-    return unsubscribe;
-  }, []);
-
-  async function pushNotification() {
-    let fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log(fcmToken);
-    }
-  }
 
   return (
     <View style={styles.BigContainer}>

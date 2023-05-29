@@ -38,47 +38,48 @@ import colors from "../../styles/colors";
 
 const StatusBarHeight = Constants.statusBarHeight;
 
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false,
-//   }),
-// });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const [hidePassword, setHidePassword] = useState(true);
   const loading = useSelector((state) => state.properties.loading);
 
-  // notification handler
-  // const [expoPushToken, setExpoPushToken] = useState("");
-  // const [notification, setNotification] = useState(false);
-  // const notificationListener = useRef();
-  // const responseListener = useRef();
+  //notification handler
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then((token) =>
-  //     setExpoPushToken(token)
-  //   );
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
-  //   notificationListener.current =
-  //     Notifications.addNotificationReceivedListener((notification) => {
-  //       setNotification(notification);
-  //     });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
 
-  //   responseListener.current =
-  //     Notifications.addNotificationResponseReceivedListener((response) => {
-  //       // console.log(response);
-  //     });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        // console.log(response);
+      });
 
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(
-  //       notificationListener.current
-  //     );
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   const LOgin = async (values, formikActions) => {
     dispatch(SETLOADING({ loading: true }));
@@ -87,6 +88,7 @@ const Login = ({ navigation }) => {
     const cleanData = { email: cleanEmail, password: values.password };
     API.post("/user/login", { ...cleanData })
       .then(async (response) => {
+        console.log(response.data);
         const newUser = response.data.user;
         dispatch(SETLOADING({ loading: false }));
         dispatch(
@@ -107,13 +109,9 @@ const Login = ({ navigation }) => {
       })
       .then(async () => {
         let token = await AsyncStorage.getItem("token");
-
-        let fcmToken = await messaging().getToken();
-
         await API.post("/Notification/updateToken", {
           token: token,
-          // notifiToken: expoPushToken,
-          notifiToken: fcmToken
+          notifiToken: expoPushToken,
         });
       })
       .catch((err) => {
@@ -237,36 +235,36 @@ const MyTextInput = ({
   );
 };
 
-// async function registerForPushNotificationsAsync() {
-//   let token;
+async function registerForPushNotificationsAsync() {
+  let token;
 
-//   if (Platform.OS === 'android') {
-//     await Notifications.setNotificationChannelAsync('default', {
-//       name: 'default',
-//       importance: Notifications.AndroidImportance.MAX,
-//       vibrationPattern: [0, 250, 250, 250],
-//       lightColor: '#FF231F7C',
-//     });
-//   }
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
 
-//   if (Device.isDevice) {
-//     const { status: existingStatus } = await Notifications.getPermissionsAsync();
-//     let finalStatus = existingStatus;
-//     if (existingStatus !== 'granted') {
-//       const { status } = await Notifications.requestPermissionsAsync();
-//       finalStatus = status;
-//     }
-//     if (finalStatus !== 'granted') {
-//       alert('Failed to get push token for push notification!');
-//       return;
-//     }
-//     token = (await Notifications.getDevicePushTokenAsync()).data;
-//     // console.log(token);
-//   } else {
-//     alert('Must use physical device for Push Notifications');
-//   }
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    // console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
 
-//   return token;
-// }
+  return token;
+}
 
 export default Login;
