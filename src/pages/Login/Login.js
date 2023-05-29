@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import API from "../../api/api";
-import React, {useRef, useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import { Animated, ImageBackground } from "react-native";
 import image from "../../../assets/kkaa.png";
 import { Formik } from "formik";
@@ -24,8 +24,8 @@ import {
 import { View, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { brand, derLight } = Colors;
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import { Octicons, Ionicons } from "@expo/vector-icons";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useState } from "react";
@@ -38,13 +38,13 @@ import colors from "../../styles/colors";
 
 const StatusBarHeight = Constants.statusBarHeight;
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: false,
+//     shouldSetBadge: false,
+//   }),
+// });
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -52,39 +52,39 @@ const Login = ({ navigation }) => {
   const loading = useSelector((state) => state.properties.loading);
 
   // notification handler
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  // const [expoPushToken, setExpoPushToken] = useState("");
+  // const [notification, setNotification] = useState(false);
+  // const notificationListener = useRef();
+  // const responseListener = useRef();
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then((token) =>
+  //     setExpoPushToken(token)
+  //   );
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
+  //   notificationListener.current =
+  //     Notifications.addNotificationReceivedListener((notification) => {
+  //       setNotification(notification);
+  //     });
 
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        // console.log(response);
-      });
+  //   responseListener.current =
+  //     Notifications.addNotificationResponseReceivedListener((response) => {
+  //       // console.log(response);
+  //     });
 
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(
+  //       notificationListener.current
+  //     );
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   const LOgin = async (values, formikActions) => {
     dispatch(SETLOADING({ loading: true }));
     const cleanEmail = values.email.trim().toLowerCase();
 
-    const cleanData = { email: cleanEmail, password: values.password};
+    const cleanData = { email: cleanEmail, password: values.password };
     API.post("/user/login", { ...cleanData })
       .then(async (response) => {
         const newUser = response.data.user;
@@ -104,13 +104,17 @@ const Login = ({ navigation }) => {
           newUser.isAdmin == true ? "1" : "0"
         );
         await AsyncStorage.setItem("myAdmin", newUser.myAdmin);
-        
-      }).then(async ()=> {
+      })
+      .then(async () => {
         let token = await AsyncStorage.getItem("token");
-        await API.post('/Notification/updateToken', {
+
+        let fcmToken = await messaging().getToken();
+
+        await API.post("/Notification/updateToken", {
           token: token,
-          notifiToken: expoPushToken
-        })
+          notifiToken: expoPushToken,
+          notifiToken: fcmToken
+        });
       })
       .catch((err) => {
         dispatch(SETLOADING({ loading: false }));
@@ -233,36 +237,36 @@ const MyTextInput = ({
   );
 };
 
-async function registerForPushNotificationsAsync() {
-  let token;
+// async function registerForPushNotificationsAsync() {
+//   let token;
 
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
+//   if (Platform.OS === 'android') {
+//     await Notifications.setNotificationChannelAsync('default', {
+//       name: 'default',
+//       importance: Notifications.AndroidImportance.MAX,
+//       vibrationPattern: [0, 250, 250, 250],
+//       lightColor: '#FF231F7C',
+//     });
+//   }
 
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    // console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
+//   if (Device.isDevice) {
+//     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+//     let finalStatus = existingStatus;
+//     if (existingStatus !== 'granted') {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//     }
+//     if (finalStatus !== 'granted') {
+//       alert('Failed to get push token for push notification!');
+//       return;
+//     }
+//     token = (await Notifications.getDevicePushTokenAsync()).data;
+//     // console.log(token);
+//   } else {
+//     alert('Must use physical device for Push Notifications');
+//   }
 
-  return token;
-}
+//   return token;
+// }
 
 export default Login;
