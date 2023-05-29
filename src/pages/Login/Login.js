@@ -112,7 +112,7 @@ const Login = ({ navigation }) => {
 
         await API.post("/Notification/updateToken", {
           token: token,
-          notifiToken: expoPushToken,
+          // notifiToken: expoPushToken,
           notifiToken: fcmToken
         });
       })
